@@ -5,7 +5,7 @@ import mongoose, { Schema } from 'mongoose';
 const PostSchema = new Schema({
   title: String,
   tags: String,
-  contents: String,
+  content: String,
   coverUrl: String,
 }, {
   toObject: { virtuals: true },

@@ -5,7 +5,7 @@ export const createPost = (req, res) => {
   const post = new Post();
   post.title = req.body.title;
   post.tags = req.body.tags;
-  post.contents = req.body.contents;
+  post.content = req.body.content;
   post.coverUrl = req.body.coverUrl;
   post.save()
     .then((result) => {

@@ -18,17 +18,14 @@ export const createPost = (req, res) => {
 
 export const getPosts = (req, res) => {
   Post.find({}).then((posts) => {
-    // res.json({ posts });
     res.send(posts);
   })
     .catch((error) => {
       res.status(400).json({ error });
     });
-  // res.send('posts should be returned');
 };
 
 export const getPost = (req, res) => {
-  // res.send(req.params.id);
   Post.findById(req.params.id)
     .then((result) => {
       res.send(result);
@@ -37,7 +34,8 @@ export const getPost = (req, res) => {
       res.status(300).json({ error });
     });
 };
-// might need to be changed to remove, but I don't think so
+
+
 export const deletePost = (req, res) => {
   Post.findByIdAndDelete(req.params.id)
     .then((result) => {
@@ -56,5 +54,4 @@ export const updatePost = (req, res) => {
     .catch((error) => {
       res.status(100).json({ error });
     });
-  // res.send(req.body);
 };

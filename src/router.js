@@ -21,7 +21,7 @@ router.route('/posts/:id')
   .put(requireAuth, Posts.updatePost)
   .delete(requireAuth, Posts.deletePost);
 
-// not sure if this will work
+
 router.post('/signin', requireSignin, UserController.signin);
 router.post('/signup', UserController.signup);
 

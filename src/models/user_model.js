@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 import mongoose, { Schema } from 'mongoose';
-import bcryptjs from 'bcryptjs';
+import { genSaltSync, hashSync, compare } from 'bcryptjs';
 
 
 // create a PostSchema with a title field
@@ -21,14 +21,17 @@ UserSchema.pre('save', function beforeyYourModelSave(next) {
   // generate salt
   if (!user.isModified('password')) return next();
   // eslint-disable-next-line consistent-return
-  bcryptjs.genSalt(10, (err, salt) => {
-    if (err) return next(err);
-    bcryptjs.hash(user.password, salt, (err, hash) => {
-      if (err) return next(err);
-      user.password = hash;
-      return next();
-    });
-  });
+  const salt = genSaltSync(10);
+  const hash = hashSync(user.password, salt);
+  user.password = hash;
+  // bcryptjs.genSalt(10, (err, salt) => {
+  //   if (err) return next(err);
+  //   bcryptjs.hash(user.password, salt, (err, hash) => {
+  //     if (err) return next(err);
+  //     user.password = hash;
+  //     return next();
+  //   });
+  // });
   return next();
 });
 
@@ -36,7 +39,7 @@ UserSchema.pre('save', function beforeyYourModelSave(next) {
 //  this arrow notation is lexically scoped and prevents binding scope, which mongoose relies on
 UserSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
   // eslint-disable-next-line consistent-return
-  bcryptjs.compare(candidatePassword, this.password, (err, isMatch) => {
+  compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return callback(err);
     callback(null, isMatch);
   });

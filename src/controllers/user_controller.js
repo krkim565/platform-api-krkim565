@@ -13,8 +13,6 @@ function tokenForUser(user) {
 }
 
 export const signin = (req, res, next) => {
-  // maybe have to do more here
-  console.log(req);
   res.send({ token: tokenForUser(req.user) });
 };
 
@@ -33,9 +31,9 @@ export const signup = (req, res, next) => {
       const user = new User();
       user.email = email;
       user.password = password;
+
       user.save()
         .then((newUser) => {
-        // don't know what to insert in parameter
           return res.send({ token: tokenForUser(newUser) });
         })
         .catch((error) => {

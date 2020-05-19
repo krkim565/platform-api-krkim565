@@ -7,9 +7,19 @@ import { genSaltSync, hashSync, compare } from 'bcryptjs';
 const UserSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
   password: { type: String },
+  userName: String,
 }, {
   toObject: { virtuals: true },
-  toJSON: { virtuals: true },
+  toJSON: {
+    virtuals: true,
+    transform(doc, ret, options) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.password;
+      delete ret.__v;
+      return ret;
+    },
+  },
   timestamps: true,
 });
 
@@ -18,9 +28,9 @@ UserSchema.pre('save', function beforeyYourModelSave(next) {
   // the function runs in some other context so DO NOT bind it
   const user = this;
 
-  // generate salt
+
   if (!user.isModified('password')) return next();
-  // eslint-disable-next-line consistent-return
+  // generate salt
   const salt = genSaltSync(10);
   const hash = hashSync(user.password, salt);
   user.password = hash;

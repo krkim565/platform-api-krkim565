@@ -27,7 +27,7 @@ export const getPosts = (req, res) => {
 };
 
 export const getPost = (req, res) => {
-  Post.findById(req.params.id)
+  Post.findById(req.params.id).populate('author')
     .then((result) => {
       res.send(result);
     })
@@ -48,7 +48,7 @@ export const deletePost = (req, res) => {
 };
 
 export const updatePost = (req, res) => {
-  Post.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  Post.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('author')
     .then((result) => {
       res.send(result);
     })
